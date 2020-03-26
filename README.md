@@ -3,13 +3,19 @@ Tool for using custom stage host in projects with **Dio** with Proxy
 Using Hive as persitent storage
 
 ## How to include
-TODO
+in pubspec.yaml add:
+```yaml
+dependencies:
+  stage_host_selector:
+    git: https://github.com/magdevelopment/DioStageHostSelector.git
+```
 
 ## How to use
 1. Initialize somewhere in main:
 ```dart
 await Hive.initFlutter();
 
+// [!] Should be after Hive
 if (kDevBuild) {
    await StageHostSelectorComponent.init(baseUrl);
 }
