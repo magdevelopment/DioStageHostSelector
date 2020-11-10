@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:stage_host_selector/repository/proxy_repository.dart';
-import 'package:stage_host_selector/repository/stage_repository.dart';
-import 'package:stage_host_selector/ui/input_dialog.dart';
+import 'package:dio_stage_host_selector/repository/proxy_repository.dart';
+import 'package:dio_stage_host_selector/repository/stage_repository.dart';
+import 'package:dio_stage_host_selector/ui/input_dialog.dart';
 
 class StageHostSelectorDialog extends StatelessWidget {
   final StageRepository stageRepository;
@@ -23,7 +23,7 @@ class StageHostSelectorDialog extends StatelessWidget {
         shrinkWrap: true,
         padding: EdgeInsets.all(16),
         children: <Widget>[
-          Text('URL сервера', style: theme.textTheme.title),
+          Text('Stage URL', style: theme.textTheme.headline6),
           const SizedBox(height: 8),
           StreamBuilder(
             stream: stageRepository.selectedUrlStream,
@@ -33,13 +33,15 @@ class StageHostSelectorDialog extends StatelessWidget {
               return StreamBuilder(
                 stream: stageRepository.suggestedUrlsStream,
                 initialData: const <String>{},
-                builder: (BuildContext context, AsyncSnapshot<Set<String>> snapshot) {
+                builder: (BuildContext context,
+                    AsyncSnapshot<Set<String>> snapshot) {
                   return Wrap(
                     spacing: 8,
                     children: <Widget>[
                       for (String url in snapshot.data)
                         GestureDetector(
-                          onLongPress: () => _showAddUrlDialog(context, initialText: url),
+                          onLongPress: () =>
+                              _showAddUrlDialog(context, initialText: url),
                           child: InputChip(
                             label: Text(
                               url,
@@ -53,12 +55,13 @@ class StageHostSelectorDialog extends StatelessWidget {
                                 stageRepository.selectUrl(null);
                               }
                             },
-                            onDeleted: () => stageRepository.removeSuggestedUrl(url),
+                            onDeleted: () =>
+                                stageRepository.removeSuggestedUrl(url),
                           ),
                         ),
                       ActionChip(
                         avatar: Icon(Icons.add),
-                        label: Text('Добавить'),
+                        label: Text('ADD'),
                         onPressed: () => _showAddUrlDialog(context),
                       ),
                     ],
@@ -68,7 +71,7 @@ class StageHostSelectorDialog extends StatelessWidget {
             },
           ),
           const SizedBox(height: 8),
-          Text('Proxy', style: theme.textTheme.title),
+          Text('Proxy', style: theme.textTheme.headline6),
           const SizedBox(height: 8),
           StreamBuilder(
             stream: proxyRepository.selectedProxyStream,
@@ -78,13 +81,15 @@ class StageHostSelectorDialog extends StatelessWidget {
               return StreamBuilder(
                 stream: proxyRepository.suggestedProxysStream,
                 initialData: const <String>{},
-                builder: (BuildContext context, AsyncSnapshot<Set<String>> snapshot) {
+                builder: (BuildContext context,
+                    AsyncSnapshot<Set<String>> snapshot) {
                   return Wrap(
                     spacing: 8,
                     children: <Widget>[
                       for (String proxy in snapshot.data)
                         GestureDetector(
-                          onLongPress: () => _showAddProxyDialog(context, initialText: proxy),
+                          onLongPress: () =>
+                              _showAddProxyDialog(context, initialText: proxy),
                           child: InputChip(
                             label: Text(
                               proxy,
@@ -103,7 +108,7 @@ class StageHostSelectorDialog extends StatelessWidget {
                         ),
                       ActionChip(
                         avatar: Icon(Icons.add),
-                        label: Text('Добавить'),
+                        label: Text('ADD'),
                         onPressed: () => _showAddProxyDialog(context),
                       ),
                     ],
@@ -122,7 +127,7 @@ class StageHostSelectorDialog extends StatelessWidget {
       context: context,
       isScrollControlled: true,
       builder: (BuildContext context) => InputDialog(
-        hintText: 'Введите URL',
+        hintText: 'Input stage URL',
         onSubmit: (url) => stageRepository.addSuggestedUrl(url),
         initialText: initialText,
       ),
@@ -134,7 +139,7 @@ class StageHostSelectorDialog extends StatelessWidget {
       context: context,
       isScrollControlled: true,
       builder: (BuildContext context) => InputDialog(
-        hintText: 'Введите Proxy',
+        hintText: 'Input proxy address',
         onSubmit: (proxy) => proxyRepository.addSuggestedProxy(proxy),
         initialText: initialText,
       ),

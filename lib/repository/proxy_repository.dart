@@ -58,7 +58,7 @@ class _ProxyRepositoryImpl implements ProxyRepository {
 
   @override
   void addSuggestedProxy(String proxy) {
-    if (proxy.isEmpty) throw Exception('Не может быть пустым');
+    if (proxy.isEmpty) throw Exception('Proxy can not be empty');
 
     final suggestedProxys = this.suggestedProxys;
     suggestedProxys.add(proxy);
