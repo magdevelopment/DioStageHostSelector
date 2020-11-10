@@ -2,6 +2,10 @@
 Tool for using custom stage host in projects with **Dio** with Proxy
 Using Hive as persitent storage
 
+![Indicator](/img/indicator_view.png)
+
+![Dialog](/img/dialog.png)
+
 ## How to install
 ```yaml
 dependencies:
