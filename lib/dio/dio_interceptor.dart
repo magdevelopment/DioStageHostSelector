@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:stage_host_selector/repository/stage_repository.dart';
+import 'package:dio_stage_host_selector/repository/stage_repository.dart';
 
 class StageHostSelectorInterceptor extends Interceptor {
   final StageRepository _repository;

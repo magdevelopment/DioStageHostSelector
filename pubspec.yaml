@@ -1,8 +1,8 @@
-name: stage_host_selector
-description: A new Flutter package project.
-version: 0.0.1
-author:
-homepage:
+name: dio_stage_host_selector
+description: Stage Url and Proxy selector for Dio.
+version: 1.0.0
+author: Orteney
+homepage: https://github.com/magdevelopment/DioStageHostSelector
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -11,9 +11,9 @@ dependencies:
   flutter:
     sdk: flutter
   
-  dio: ^3.0.9
-  rxdart: ^0.23.1
-  hive: ^1.4.1+1
+  dio: ^3.0.10
+  rxdart: ^0.24.1
+  hive: ^1.4.4+1
 
 dev_dependencies:
   flutter_test:

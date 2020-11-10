@@ -58,7 +58,7 @@ class _StageRepositoryImpl implements StageRepository {
 
   @override
   void addSuggestedUrl(String url) {
-    if (url.isEmpty) throw Exception('Не может быть пустым');
+    if (url.isEmpty) throw Exception('Url can not be empty');
 
     final suggestedUrls = this.suggestedUrls;
     suggestedUrls.add(url);
