@@ -9,10 +9,10 @@ class StageHostIndicatorWidget extends StatelessWidget {
   final ProxyRepository proxyRepository;
 
   const StageHostIndicatorWidget({
-    Key key,
-    @required this.defaultUrl,
-    @required this.stageRepository,
-    @required this.proxyRepository,
+    Key? key,
+    required this.defaultUrl,
+    required this.stageRepository,
+    required this.proxyRepository,
   }) : super(key: key);
 
   @override

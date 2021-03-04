@@ -4,7 +4,7 @@ import 'package:rxdart/rxdart.dart';
 abstract class ProxyRepository {
   factory ProxyRepository(Box hiveStorage) => _ProxyRepositoryImpl(hiveStorage);
 
-  String get selectedProxy;
+  String? get selectedProxy;
   Stream<String> get selectedProxyStream;
 
   Set<String> get suggestedProxys;
@@ -12,7 +12,7 @@ abstract class ProxyRepository {
 
   void addSuggestedProxy(String proxy);
   void removeSuggestedProxy(String proxy);
-  void selectProxy(String proxy);
+  void selectProxy(String? proxy);
 }
 
 class _ProxyRepositoryImpl implements ProxyRepository {
@@ -24,16 +24,16 @@ class _ProxyRepositoryImpl implements ProxyRepository {
   static const String _suggestedProxysKey = 'suggestedProxys';
 
   @override
-  String get selectedProxy => _hiveBox.get(_selectedProxyKey);
+  String? get selectedProxy => _hiveBox.get(_selectedProxyKey);
 
   @override
   Stream<String> get selectedProxyStream {
     return _hiveBox.watch(key: _selectedProxyKey).map((event) {
       if (event.value is String) {
-        return event.value as String;
+        return event.value as String?;
       } else
         return null;
-    }).startWith(selectedProxy);
+    }).startWith(selectedProxy) as Stream<String>;
   }
 
   @override
@@ -85,7 +85,7 @@ class _ProxyRepositoryImpl implements ProxyRepository {
   }
 
   @override
-  void selectProxy(String proxy) {
+  void selectProxy(String? proxy) {
     _hiveBox.put(_selectedProxyKey, proxy);
   }
 }

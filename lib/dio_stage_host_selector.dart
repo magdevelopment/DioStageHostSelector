@@ -20,7 +20,7 @@ class StageHostSelectorComponent {
   StageHostSelectorComponent._(
       this._baseUrl, this._stageRepository, this._proxyRepository);
 
-  static StageHostSelectorComponent _instance;
+  static StageHostSelectorComponent? _instance;
 
   static Future<void> init(String baseUrl) async {
     final box = await Hive.openBox('stage_host_selector');
@@ -29,18 +29,18 @@ class StageHostSelectorComponent {
   }
 
   static Interceptor buildInterceptor() =>
-      StageHostSelectorInterceptor(_instance._stageRepository);
+      StageHostSelectorInterceptor(_instance!._stageRepository);
 
   static Widget buildIndicator(BuildContext context) {
     return StageHostIndicatorWidget(
-      defaultUrl: _instance._baseUrl,
-      stageRepository: _instance._stageRepository,
-      proxyRepository: _instance._proxyRepository,
+      defaultUrl: _instance!._baseUrl,
+      stageRepository: _instance!._stageRepository,
+      proxyRepository: _instance!._proxyRepository,
     );
   }
 
   static String findProxy(Uri uri) {
-    final proxy = _instance?._proxyRepository?.selectedProxy;
+    final proxy = _instance?._proxyRepository.selectedProxy;
     if (proxy != null) {
       return "PROXY $proxy";
     } else {

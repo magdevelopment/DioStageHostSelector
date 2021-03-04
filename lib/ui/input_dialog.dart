@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 class InputDialog extends StatefulWidget {
   final ValueChanged<String> onSubmit;
   final String hintText;
-  final String initialText;
+  final String? initialText;
 
   InputDialog({
-    Key key,
-    @required this.hintText,
-    @required this.onSubmit,
+    Key? key,
+    required this.hintText,
+    required this.onSubmit,
     this.initialText,
   }) : super(key: key);
 
@@ -17,9 +17,9 @@ class InputDialog extends StatefulWidget {
 }
 
 class _InputDialogState extends State<InputDialog> {
+  late TextEditingController textController;
   bool canSubmit = false;
-  TextEditingController textController;
-  String error;
+  String? error;
 
   @override
   void initState() {
@@ -44,7 +44,7 @@ class _InputDialogState extends State<InputDialog> {
           top: 16,
           left: 16,
           right: 16,
-          bottom: 16 + MediaQuery.of(context).viewInsets.bottom,
+          bottom: 16,
         ),
         child: TextField(
           controller: textController,

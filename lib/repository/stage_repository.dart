@@ -4,7 +4,7 @@ import 'package:rxdart/rxdart.dart';
 abstract class StageRepository {
   factory StageRepository(Box hiveStorage) => _StageRepositoryImpl(hiveStorage);
 
-  String get selectedUrl;
+  String? get selectedUrl;
   Stream<String> get selectedUrlStream;
 
   Set<String> get suggestedUrls;
@@ -12,7 +12,7 @@ abstract class StageRepository {
 
   void addSuggestedUrl(String url);
   void removeSuggestedUrl(String url);
-  void selectUrl(String url);
+  void selectUrl(String? url);
 }
 
 class _StageRepositoryImpl implements StageRepository {
@@ -24,16 +24,16 @@ class _StageRepositoryImpl implements StageRepository {
   static const String _suggestedUrlsKey = 'suggestedUrls';
 
   @override
-  String get selectedUrl => _hiveBox.get(_selectedUrlKey);
+  String? get selectedUrl => _hiveBox.get(_selectedUrlKey);
 
   @override
   Stream<String> get selectedUrlStream {
     return _hiveBox.watch(key: _selectedUrlKey).map((event) {
       if (event.value is String) {
-        return event.value as String;
+        return event.value as String?;
       } else
         return null;
-    }).startWith(selectedUrl);
+    }).startWith(selectedUrl) as Stream<String>;
   }
 
   @override
@@ -85,7 +85,7 @@ class _StageRepositoryImpl implements StageRepository {
   }
 
   @override
-  void selectUrl(String url) {
+  void selectUrl(String? url) {
     _hiveBox.put(_selectedUrlKey, url);
   }
 }
