@@ -27,7 +27,7 @@ class StageHostSelectorDialog extends StatelessWidget {
           const SizedBox(height: 8),
           StreamBuilder(
             stream: stageRepository!.selectedUrlStream,
-            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+            builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
               final selectedUrl = snapshot.data;
 
               return StreamBuilder(
@@ -75,7 +75,7 @@ class StageHostSelectorDialog extends StatelessWidget {
           const SizedBox(height: 8),
           StreamBuilder(
             stream: proxyRepository!.selectedProxyStream,
-            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+            builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
               final selectedProxy = snapshot.data;
 
               return StreamBuilder(

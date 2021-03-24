@@ -5,7 +5,7 @@ abstract class StageRepository {
   factory StageRepository(Box hiveStorage) => _StageRepositoryImpl(hiveStorage);
 
   String? get selectedUrl;
-  Stream<String> get selectedUrlStream;
+  Stream<String?> get selectedUrlStream;
 
   Set<String> get suggestedUrls;
   Stream<Set<String>> get suggestedUrlsStream;
@@ -27,13 +27,13 @@ class _StageRepositoryImpl implements StageRepository {
   String? get selectedUrl => _hiveBox.get(_selectedUrlKey);
 
   @override
-  Stream<String> get selectedUrlStream {
+  Stream<String?> get selectedUrlStream {
     return _hiveBox.watch(key: _selectedUrlKey).map((event) {
       if (event.value is String) {
         return event.value as String?;
       } else
         return null;
-    }).startWith(selectedUrl) as Stream<String>;
+    }).startWith(selectedUrl);
   }
 
   @override

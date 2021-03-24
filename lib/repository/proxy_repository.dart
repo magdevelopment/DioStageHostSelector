@@ -5,7 +5,7 @@ abstract class ProxyRepository {
   factory ProxyRepository(Box hiveStorage) => _ProxyRepositoryImpl(hiveStorage);
 
   String? get selectedProxy;
-  Stream<String> get selectedProxyStream;
+  Stream<String?> get selectedProxyStream;
 
   Set<String> get suggestedProxys;
   Stream<Set<String>> get suggestedProxysStream;
@@ -27,13 +27,13 @@ class _ProxyRepositoryImpl implements ProxyRepository {
   String? get selectedProxy => _hiveBox.get(_selectedProxyKey);
 
   @override
-  Stream<String> get selectedProxyStream {
+  Stream<String?> get selectedProxyStream {
     return _hiveBox.watch(key: _selectedProxyKey).map((event) {
       if (event.value is String) {
         return event.value as String?;
       } else
         return null;
-    }).startWith(selectedProxy) as Stream<String>;
+    }).startWith(selectedProxy);
   }
 
   @override

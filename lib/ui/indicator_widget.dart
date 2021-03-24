@@ -36,7 +36,7 @@ class StageHostIndicatorWidget extends StatelessWidget {
               child: StreamBuilder(
                 stream: stageRepository.selectedUrlStream,
                 builder:
-                    (BuildContext context, AsyncSnapshot<String> snapshot) {
+                    (BuildContext context, AsyncSnapshot<String?> snapshot) {
                   return Text(
                     snapshot.data ?? defaultUrl,
                     softWrap: false,
@@ -47,7 +47,7 @@ class StageHostIndicatorWidget extends StatelessWidget {
             ),
             StreamBuilder(
               stream: proxyRepository.selectedProxyStream,
-              builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+              builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
                 if (snapshot.hasData) {
                   return Text('+ proxy');
                 } else {
