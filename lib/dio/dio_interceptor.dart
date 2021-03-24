@@ -7,13 +7,13 @@ class StageHostSelectorInterceptor extends Interceptor {
   StageHostSelectorInterceptor(this._repository);
 
   @override
-  Future onRequest(RequestOptions options) {
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     final customBaseUrl = _repository.selectedUrl;
 
     if (customBaseUrl != null) {
       options.baseUrl = customBaseUrl;
     }
 
-    return super.onRequest(options);
+    return super.onRequest(options, handler);
   }
 }

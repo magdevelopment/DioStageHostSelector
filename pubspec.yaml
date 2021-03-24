@@ -1,6 +1,6 @@
 name: dio_stage_host_selector
 description: Stage Url and Proxy selector for Dio.
-version: 2.0.0
+version: 2.1.0
 author: Orteney
 homepage: https://github.com/magdevelopment/DioStageHostSelector
 
@@ -11,9 +11,9 @@ dependencies:
   flutter:
     sdk: flutter
   
-  dio: ^4.0.0-beta4
+  dio: ^4.0.0-prev3
   rxdart: ^0.26.0
-  hive: 1.6.0-nullsafety.2
+  hive: ^2.0.0
 
 dev_dependencies:
   flutter_test:
