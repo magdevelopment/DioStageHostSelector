@@ -1,16 +1,17 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:dio_stage_host_selector/repository/proxy_repository.dart';
 import 'package:dio_stage_host_selector/repository/stage_repository.dart';
 import 'package:dio_stage_host_selector/ui/input_dialog.dart';
 
 class StageHostSelectorDialog extends StatelessWidget {
-  final StageRepository? stageRepository;
-  final ProxyRepository? proxyRepository;
+  final StageRepository stageRepository;
+  final ProxyRepository proxyRepository;
 
   StageHostSelectorDialog({
     Key? key,
-    this.stageRepository,
-    this.proxyRepository,
+    required this.stageRepository,
+    required this.proxyRepository,
   }) : super(key: key);
 
   @override
@@ -26,12 +27,12 @@ class StageHostSelectorDialog extends StatelessWidget {
           Text('Stage URL', style: theme.textTheme.headline6),
           const SizedBox(height: 8),
           StreamBuilder(
-            stream: stageRepository!.selectedUrlStream,
+            stream: stageRepository.selectedUrlStream,
             builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
               final selectedUrl = snapshot.data;
 
               return StreamBuilder(
-                stream: stageRepository!.suggestedUrlsStream,
+                stream: stageRepository.suggestedUrlsStream,
                 initialData: const <String>{},
                 builder: (BuildContext context,
                     AsyncSnapshot<Set<String>> snapshot) {
@@ -50,13 +51,13 @@ class StageHostSelectorDialog extends StatelessWidget {
                             selected: url == selectedUrl,
                             onSelected: (bool value) {
                               if (value) {
-                                stageRepository!.selectUrl(url);
+                                stageRepository.selectUrl(url);
                               } else {
-                                stageRepository!.selectUrl(null);
+                                stageRepository.selectUrl(null);
                               }
                             },
                             onDeleted: () =>
-                                stageRepository!.removeSuggestedUrl(url),
+                                stageRepository.removeSuggestedUrl(url),
                           ),
                         ),
                       ActionChip(
@@ -71,52 +72,54 @@ class StageHostSelectorDialog extends StatelessWidget {
             },
           ),
           const SizedBox(height: 8),
-          Text('Proxy', style: theme.textTheme.headline6),
-          const SizedBox(height: 8),
-          StreamBuilder(
-            stream: proxyRepository!.selectedProxyStream,
-            builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
-              final selectedProxy = snapshot.data;
+          if (!kIsWeb) ...[
+            Text('Proxy', style: theme.textTheme.headline6),
+            const SizedBox(height: 8),
+            StreamBuilder(
+              stream: proxyRepository.selectedProxyStream,
+              builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
+                final selectedProxy = snapshot.data;
 
-              return StreamBuilder(
-                stream: proxyRepository!.suggestedProxysStream,
-                initialData: const <String>{},
-                builder: (BuildContext context,
-                    AsyncSnapshot<Set<String>> snapshot) {
-                  return Wrap(
-                    spacing: 8,
-                    children: <Widget>[
-                      for (String proxy in snapshot.data!)
-                        GestureDetector(
-                          onLongPress: () =>
-                              _showAddProxyDialog(context, initialText: proxy),
-                          child: InputChip(
-                            label: Text(
-                              proxy,
-                              overflow: TextOverflow.clip,
+                return StreamBuilder(
+                  stream: proxyRepository.suggestedProxysStream,
+                  initialData: const <String>{},
+                  builder: (BuildContext context,
+                      AsyncSnapshot<Set<String>> snapshot) {
+                    return Wrap(
+                      spacing: 8,
+                      children: <Widget>[
+                        for (String proxy in snapshot.data!)
+                          GestureDetector(
+                            onLongPress: () => _showAddProxyDialog(context,
+                                initialText: proxy),
+                            child: InputChip(
+                              label: Text(
+                                proxy,
+                                overflow: TextOverflow.clip,
+                              ),
+                              selected: proxy == selectedProxy,
+                              onSelected: (bool value) {
+                                if (value) {
+                                  proxyRepository.selectProxy(proxy);
+                                } else {
+                                  proxyRepository.selectProxy(null);
+                                }
+                              },
+                              onDeleted: () => {},
                             ),
-                            selected: proxy == selectedProxy,
-                            onSelected: (bool value) {
-                              if (value) {
-                                proxyRepository!.selectProxy(proxy);
-                              } else {
-                                proxyRepository!.selectProxy(null);
-                              }
-                            },
-                            onDeleted: () => {},
                           ),
+                        ActionChip(
+                          avatar: Icon(Icons.add),
+                          label: Text('ADD'),
+                          onPressed: () => _showAddProxyDialog(context),
                         ),
-                      ActionChip(
-                        avatar: Icon(Icons.add),
-                        label: Text('ADD'),
-                        onPressed: () => _showAddProxyDialog(context),
-                      ),
-                    ],
-                  );
-                },
-              );
-            },
-          ),
+                      ],
+                    );
+                  },
+                );
+              },
+            ),
+          ],
         ],
       ),
     );
@@ -128,8 +131,8 @@ class StageHostSelectorDialog extends StatelessWidget {
       isScrollControlled: true,
       builder: (BuildContext context) => InputDialog(
         hintText: 'Input stage URL',
-        onSubmit: (url) => stageRepository!.addSuggestedUrl(url),
-        initialText: initialText,
+        onSubmit: (url) => stageRepository.addSuggestedUrl(url),
+        initialText: initialText ?? r'https://',
       ),
     );
   }
@@ -140,7 +143,7 @@ class StageHostSelectorDialog extends StatelessWidget {
       isScrollControlled: true,
       builder: (BuildContext context) => InputDialog(
         hintText: 'Input proxy address',
-        onSubmit: (proxy) => proxyRepository!.addSuggestedProxy(proxy),
+        onSubmit: (proxy) => proxyRepository.addSuggestedProxy(proxy),
         initialText: initialText,
       ),
     );

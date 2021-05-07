@@ -1,0 +1,24 @@
+name: dio_stage_host_selector_example
+description: Example of usage a dio_stage_host_selector
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  dio: ^4.0.0
+  rxdart: ^0.27.0
+  hive_flutter: ^1.0.0
+  dio_stage_host_selector:
+    path: '../'
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
