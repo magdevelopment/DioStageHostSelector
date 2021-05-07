@@ -27,12 +27,12 @@ if (kDevBuild) {
 
 2. Put indicator widget somewhere on login page:
 ```dart
-    final widget = StageHostSelectorComponent.buildIndicator(context);
+final widget = StageHostSelectorComponent.buildIndicator(context);
 ```
 
 3. When creating Dio add interceptor and proxy handler:
 ```dart
-    if (kDebugMode) {
-      StageHostSelectorComponent.configureDio(dio);
-    }
+if (kDebugMode) {
+    StageHostSelectorComponent.configureDio(dio);
+}
 ```
