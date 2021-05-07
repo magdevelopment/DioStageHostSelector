@@ -33,11 +33,6 @@ if (kDevBuild) {
 3. When creating Dio add interceptor and proxy handler:
 ```dart
     if (kDebugMode) {
-      dio.interceptors.add(StageHostSelectorComponent.buildInterceptor());
-
-      (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (HttpClient client) {
-        client.findProxy = StageHostSelectorComponent.findProxy;
-        client.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
-      };
+      StageHostSelectorComponent.configureDio(dio);
     }
 ```
