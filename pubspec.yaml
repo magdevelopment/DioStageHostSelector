@@ -1,6 +1,6 @@
 name: dio_stage_host_selector
 description: Stage Url and Proxy selector for Dio.
-version: 2.1.1
+version: 2.1.2
 author: Orteney
 homepage: https://github.com/magdevelopment/DioStageHostSelector
 
