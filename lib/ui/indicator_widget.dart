@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:dio_stage_host_selector/repository/proxy_repository.dart';
-import 'package:dio_stage_host_selector/repository/stage_repository.dart';
 import 'package:dio_stage_host_selector/ui/selector_dialog.dart';
+
+import '../repository/base_repository.dart';
 
 class StageHostIndicatorWidget extends StatelessWidget {
   final String defaultUrl;
-  final StageRepository stageRepository;
-  final ProxyRepository proxyRepository;
+  final Repository stageRepository;
+  final Repository proxyRepository;
 
   const StageHostIndicatorWidget({
     Key? key,
@@ -34,7 +34,7 @@ class StageHostIndicatorWidget extends StatelessWidget {
           children: <Widget>[
             Expanded(
               child: StreamBuilder(
-                stream: stageRepository.selectedUrlStream,
+                stream: stageRepository.currentValueStream,
                 builder:
                     (BuildContext context, AsyncSnapshot<String?> snapshot) {
                   return Text(
@@ -46,7 +46,7 @@ class StageHostIndicatorWidget extends StatelessWidget {
               ),
             ),
             StreamBuilder(
-              stream: proxyRepository.selectedProxyStream,
+              stream: proxyRepository.currentValueStream,
               builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
                 if (snapshot.hasData) {
                   return Text('+ proxy');

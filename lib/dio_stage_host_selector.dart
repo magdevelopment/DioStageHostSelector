@@ -7,7 +7,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hive/hive.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:dio_stage_host_selector/repository/proxy_repository.dart';
 import 'package:dio_stage_host_selector/repository/stage_repository.dart';
 
@@ -18,20 +19,24 @@ export 'dio/dio_interceptor.dart';
 
 class StageHostSelectorComponent {
   final String _baseUrl;
-  final StageRepository _stageRepository;
-  final ProxyRepository _proxyRepository;
+  final SharedPrefsStageRepository _stageRepository;
+  final SharedPrefsProxyRepository _proxyRepository;
 
   StageHostSelectorComponent._(
-      this._baseUrl, this._stageRepository, this._proxyRepository);
+    this._baseUrl,
+    this._stageRepository,
+    this._proxyRepository,
+  );
 
   static late StageHostSelectorComponent _instance;
 
   static Future<void> init(String defaultUrl) async {
-    final box = await Hive.openBox('stage_host_selector');
+    final sharedPreferences = await SharedPreferences.getInstance();
+
     _instance = StageHostSelectorComponent._(
       defaultUrl,
-      StageRepository(box),
-      ProxyRepository(box),
+      SharedPrefsStageRepository(sharedPreferences),
+      SharedPrefsProxyRepository(sharedPreferences),
     );
   }
 
@@ -60,7 +65,7 @@ class StageHostSelectorComponent {
   }
 
   static String findProxy(Uri uri) {
-    final proxy = _instance._proxyRepository.selectedProxy;
+    final proxy = _instance._proxyRepository.currentValue;
     if (proxy != null) {
       return "PROXY $proxy";
     } else {

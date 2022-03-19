@@ -1,12 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:dio_stage_host_selector/repository/proxy_repository.dart';
-import 'package:dio_stage_host_selector/repository/stage_repository.dart';
 import 'package:dio_stage_host_selector/ui/input_dialog.dart';
 
+import '../repository/base_repository.dart';
+
 class StageHostSelectorDialog extends StatelessWidget {
-  final StageRepository stageRepository;
-  final ProxyRepository proxyRepository;
+  final Repository stageRepository;
+  final Repository proxyRepository;
 
   StageHostSelectorDialog({
     Key? key,
@@ -27,12 +27,12 @@ class StageHostSelectorDialog extends StatelessWidget {
           Text('Stage URL', style: theme.textTheme.headline6),
           const SizedBox(height: 8),
           StreamBuilder(
-            stream: stageRepository.selectedUrlStream,
+            stream: stageRepository.currentValueStream,
             builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
               final selectedUrl = snapshot.data;
 
               return StreamBuilder(
-                stream: stageRepository.suggestedUrlsStream,
+                stream: stageRepository.suggestedValuesStream,
                 initialData: const <String>{},
                 builder: (BuildContext context,
                     AsyncSnapshot<Set<String>> snapshot) {
@@ -51,13 +51,13 @@ class StageHostSelectorDialog extends StatelessWidget {
                             selected: url == selectedUrl,
                             onSelected: (bool value) {
                               if (value) {
-                                stageRepository.selectUrl(url);
+                                stageRepository.setCurrentValue(url);
                               } else {
-                                stageRepository.selectUrl(null);
+                                stageRepository.setCurrentValue(null);
                               }
                             },
                             onDeleted: () =>
-                                stageRepository.removeSuggestedUrl(url),
+                                stageRepository.removeSuggestedValue(url),
                           ),
                         ),
                       ActionChip(
@@ -76,12 +76,12 @@ class StageHostSelectorDialog extends StatelessWidget {
             Text('Proxy', style: theme.textTheme.headline6),
             const SizedBox(height: 8),
             StreamBuilder(
-              stream: proxyRepository.selectedProxyStream,
+              stream: proxyRepository.currentValueStream,
               builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
                 final selectedProxy = snapshot.data;
 
                 return StreamBuilder(
-                  stream: proxyRepository.suggestedProxysStream,
+                  stream: proxyRepository.suggestedValuesStream,
                   initialData: const <String>{},
                   builder: (BuildContext context,
                       AsyncSnapshot<Set<String>> snapshot) {
@@ -100,12 +100,13 @@ class StageHostSelectorDialog extends StatelessWidget {
                               selected: proxy == selectedProxy,
                               onSelected: (bool value) {
                                 if (value) {
-                                  proxyRepository.selectProxy(proxy);
+                                  proxyRepository.setCurrentValue(proxy);
                                 } else {
-                                  proxyRepository.selectProxy(null);
+                                  proxyRepository.setCurrentValue(null);
                                 }
                               },
-                              onDeleted: () => {},
+                              onDeleted: () =>
+                                  proxyRepository.removeSuggestedValue(proxy),
                             ),
                           ),
                         ActionChip(
@@ -131,7 +132,7 @@ class StageHostSelectorDialog extends StatelessWidget {
       isScrollControlled: true,
       builder: (BuildContext context) => InputDialog(
         hintText: 'Input stage URL',
-        onSubmit: (url) => stageRepository.addSuggestedUrl(url),
+        onSubmit: (url) => stageRepository.addSuggestedValue(url),
         initialText: initialText ?? r'https://',
       ),
     );
@@ -143,7 +144,7 @@ class StageHostSelectorDialog extends StatelessWidget {
       isScrollControlled: true,
       builder: (BuildContext context) => InputDialog(
         hintText: 'Input proxy address',
-        onSubmit: (proxy) => proxyRepository.addSuggestedProxy(proxy),
+        onSubmit: (proxy) => proxyRepository.addSuggestedValue(proxy),
         initialText: initialText,
       ),
     );

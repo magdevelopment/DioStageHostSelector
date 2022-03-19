@@ -1,14 +1,15 @@
 import 'package:dio/dio.dart';
-import 'package:dio_stage_host_selector/repository/stage_repository.dart';
+
+import '../repository/base_repository.dart';
 
 class StageHostSelectorInterceptor extends Interceptor {
-  final StageRepository _repository;
+  final Repository _stageRepository;
 
-  StageHostSelectorInterceptor(this._repository);
+  StageHostSelectorInterceptor(this._stageRepository);
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    final customBaseUrl = _repository.selectedUrl;
+    final customBaseUrl = _stageRepository.currentValue;
 
     if (customBaseUrl != null) {
       options.baseUrl = customBaseUrl;

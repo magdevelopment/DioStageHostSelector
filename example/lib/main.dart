@@ -1,15 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:dio_stage_host_selector/dio_stage_host_selector.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
 import 'dio/dio_factory.dart';
 import 'dio/stream_interceptor.dart';
 
 void main() async {
-  await Hive.initFlutter();
+  WidgetsFlutterBinding.ensureInitialized();
   await StageHostSelectorComponent.init(DioFactory.baseUrl);
+
   runApp(MyApp());
 }
 
