@@ -1,6 +1,6 @@
 # DioStageHostSelector
-Tool for using custom stage host in projects with **Dio** with Proxy
-Using Hive as persitent storage
+DevTool for define custom stage host url and/or Proxy address in projects with **Dio**
+Using [shared_preferences](https://pub.dev/packages/shared_preferences) as persitent storage
 
 ![Indicator](/img/indicator_view.png)
 
@@ -18,8 +18,6 @@ dependencies:
 ## How to use
 1. Initialize somewhere in main:
 ```dart
-await Hive.initFlutter();
-
 if (kDevBuild) {
    await StageHostSelectorComponent.init(baseUrl);
 }
@@ -30,7 +28,7 @@ if (kDevBuild) {
 final widget = StageHostSelectorComponent.buildIndicator(context);
 ```
 
-3. When creating Dio add interceptor and proxy handler:
+3. When creating Dio, configure it by:
 ```dart
 if (kDebugMode) {
     StageHostSelectorComponent.configureDio(dio);
