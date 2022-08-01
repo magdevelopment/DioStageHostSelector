@@ -12,7 +12,7 @@ dependencies:
   dio_stage_host_selector:
     git:
       url: https://github.com/magdevelopment/DioStageHostSelector.git
-      ref: 1.0.0
+      ref: 3.0.0
 ```
 
 ## How to use
