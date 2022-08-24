@@ -2,9 +2,7 @@ library dio_stage_host_selector;
 
 import 'dart:io';
 
-import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -38,10 +36,9 @@ class StageHostSelectorComponent {
       SharedPrefsStageRepository(sharedPreferences),
       SharedPrefsProxyRepository(sharedPreferences),
     );
-  }
 
-  static Interceptor buildInterceptor() =>
-      StageHostSelectorInterceptor(_instance._stageRepository);
+    HttpOverrides.global = _ProxyHttpOverride();
+  }
 
   static Widget buildIndicator(BuildContext context) {
     return StageHostIndicatorWidget(
@@ -52,24 +49,27 @@ class StageHostSelectorComponent {
   }
 
   static void configureDio(Dio dio) {
-    dio.interceptors.add(StageHostSelectorComponent.buildInterceptor());
-
-    if (kIsWeb) return; //? Proxy is not awailable for Web adapter
-
-    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-        (HttpClient client) {
-      client.findProxy = StageHostSelectorComponent.findProxy;
-      client.badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
-    };
+    dio.interceptors.add(
+      StageHostSelectorInterceptor(_instance._stageRepository),
+    );
   }
 
-  static String findProxy(Uri uri) {
+  static String _findProxy(Uri uri) {
     final proxy = _instance._proxyRepository.currentValue;
     if (proxy != null) {
       return "PROXY $proxy";
     } else {
       return "DIRECT";
     }
+  }
+}
+
+class _ProxyHttpOverride extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..findProxy = StageHostSelectorComponent._findProxy
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }
