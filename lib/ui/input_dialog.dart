@@ -73,7 +73,7 @@ class _InputDialogState extends State<InputDialog> {
             suffixIcon: canSubmit
                 ? IconButton(
                     icon: Icon(Icons.done),
-                    onPressed: () => _onSubmit(),
+                    onPressed: _onSubmit,
                   )
                 : null,
           ),

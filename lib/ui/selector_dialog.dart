@@ -1,5 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
 import 'package:dio_stage_host_selector/ui/input_dialog.dart';
 
 import '../repository/base_repository.dart';
@@ -72,55 +72,53 @@ class StageHostSelectorDialog extends StatelessWidget {
             },
           ),
           const SizedBox(height: 8),
-          if (!kIsWeb) ...[
-            Text('Proxy', style: theme.textTheme.headline6),
-            const SizedBox(height: 8),
-            StreamBuilder(
-              stream: proxyRepository.currentValueStream,
-              builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
-                final selectedProxy = snapshot.data;
+          Text('Proxy', style: theme.textTheme.headline6),
+          const SizedBox(height: 8),
+          StreamBuilder(
+            stream: proxyRepository.currentValueStream,
+            builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
+              final selectedProxy = snapshot.data;
 
-                return StreamBuilder(
-                  stream: proxyRepository.suggestedValuesStream,
-                  initialData: const <String>{},
-                  builder: (BuildContext context,
-                      AsyncSnapshot<Set<String>> snapshot) {
-                    return Wrap(
-                      spacing: 8,
-                      children: <Widget>[
-                        for (String proxy in snapshot.data!)
-                          GestureDetector(
-                            onLongPress: () => _showAddProxyDialog(context,
-                                initialText: proxy),
-                            child: InputChip(
-                              label: Text(
-                                proxy,
-                                overflow: TextOverflow.clip,
-                              ),
-                              selected: proxy == selectedProxy,
-                              onSelected: (bool value) {
-                                if (value) {
-                                  proxyRepository.setCurrentValue(proxy);
-                                } else {
-                                  proxyRepository.setCurrentValue(null);
-                                }
-                              },
-                              onDeleted: () =>
-                                  proxyRepository.removeSuggestedValue(proxy),
+              return StreamBuilder(
+                stream: proxyRepository.suggestedValuesStream,
+                initialData: const <String>{},
+                builder: (BuildContext context,
+                    AsyncSnapshot<Set<String>> snapshot) {
+                  return Wrap(
+                    spacing: 8,
+                    children: <Widget>[
+                      for (String proxy in snapshot.data!)
+                        GestureDetector(
+                          onLongPress: () =>
+                              _showAddProxyDialog(context, initialText: proxy),
+                          child: InputChip(
+                            label: Text(
+                              proxy,
+                              overflow: TextOverflow.clip,
                             ),
+                            selected: proxy == selectedProxy,
+                            onSelected: (bool value) {
+                              if (value) {
+                                proxyRepository.setCurrentValue(proxy);
+                              } else {
+                                proxyRepository.setCurrentValue(null);
+                              }
+                            },
+                            onDeleted: () =>
+                                proxyRepository.removeSuggestedValue(proxy),
                           ),
-                        ActionChip(
-                          avatar: Icon(Icons.add),
-                          label: Text('ADD'),
-                          onPressed: () => _showAddProxyDialog(context),
                         ),
-                      ],
-                    );
-                  },
-                );
-              },
-            ),
-          ],
+                      ActionChip(
+                        avatar: Icon(Icons.add),
+                        label: Text('ADD'),
+                        onPressed: () => _showAddProxyDialog(context),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+          ),
         ],
       ),
     );
