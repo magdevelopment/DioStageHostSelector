@@ -24,7 +24,7 @@ class StageHostSelectorDialog extends StatelessWidget {
         shrinkWrap: true,
         padding: EdgeInsets.all(16),
         children: <Widget>[
-          Text('Stage URL', style: theme.textTheme.headline6),
+          Text('Stage URL', style: theme.textTheme.titleLarge),
           const SizedBox(height: 8),
           StreamBuilder(
             stream: stageRepository.currentValueStream,
@@ -72,7 +72,7 @@ class StageHostSelectorDialog extends StatelessWidget {
             },
           ),
           const SizedBox(height: 8),
-          Text('Proxy', style: theme.textTheme.headline6),
+          Text('Proxy', style: theme.textTheme.titleLarge),
           const SizedBox(height: 8),
           StreamBuilder(
             stream: proxyRepository.currentValueStream,

@@ -6,9 +6,9 @@ abstract class DioFactory {
 
   static final BaseOptions _defaultOptions = BaseOptions(
     baseUrl: baseUrl,
-    connectTimeout: 5000,
-    receiveTimeout: 10000,
-    sendTimeout: 10000,
+    connectTimeout: const Duration(seconds: 5),
+    receiveTimeout: const Duration(seconds: 10),
+    sendTimeout: const Duration(seconds: 10),
   );
 
   static Dio buildClient() {
